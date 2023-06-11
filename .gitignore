@@ -1,0 +1,20 @@
+# Unreal 5.2 Ignore File
+**/.vs
+*.sln
+**/Binaries
+**/Saved
+**/Intermediate
+**/DerivedDataCache
+**/FileOpenOrder
+**/obj
+**/bin
+**/Engine/Build/Receipts
+**/Engine/Programs/UnrealBuildTool
+
+# Ignore Linux Project files
+*~
+*.DS_Store
+*.user
+*.pro
+*.pri
+*.kdev4
