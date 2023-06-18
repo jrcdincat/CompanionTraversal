@@ -39,7 +39,7 @@ void AMyPlayer::SetForwardClimbVector(USplineComponent* splineComponent, float d
 	FVector currentPlayerForwardVector = GetActorForwardVector();
 	rightVectorAtSplineLocation.Z = 0.0f;
 	rightVectorAtSplineLocation = -rightVectorAtSplineLocation;
-	
+
 	// Rotate the player by the angle between player forward vector and the desired forward vector
 	FQuat rotationBetweenVectors = FQuat::FindBetweenVectors(currentPlayerForwardVector, rightVectorAtSplineLocation);
 	AddActorLocalRotation(rotationBetweenVectors);

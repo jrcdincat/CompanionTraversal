@@ -29,5 +29,4 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 		void SetForwardClimbVector(USplineComponent* splineComponent, float distanceAlongSpline);
-
 };
