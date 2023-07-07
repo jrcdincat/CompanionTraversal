@@ -1,0 +1,53 @@
+// Fill out your copyright notice in the Description page of Project Settings.
+
+#pragma once
+
+#include "CoreMinimal.h"
+#include "GameFramework/Character.h"
+#include "AIBase.generated.h"
+
+UCLASS()
+class COMPANIONTRAVERSAL_API AAIBase : public ACharacter
+{
+	GENERATED_BODY()
+
+public:
+	// Sets default values for this character's properties
+	AAIBase();
+
+	struct Node
+	{
+		int32 _id;
+		TMap<int32, float> _neighbors;
+	};
+
+protected:
+	// Called when the game starts or when spawned
+	virtual void BeginPlay() override;
+
+	/// <summary>
+	/// Run Dijkstra's Algorithm on given graph
+	/// </summary>
+	/// <returns>Shortest Path</returns>
+	TArray<int32> RunPathFinding(TMap<int32, Node>& graph, int32 startNode, int32 targetNode);
+
+
+	TArray<int32> RunDijkstra(TMap<int32, Node>& graph, const int32 startNode, const int32 endNode);
+
+
+	// Graph
+	TMap<int32, Node> Graph;
+
+	UFUNCTION(BlueprintCallable, Category = "Pathfinding")
+	TArray<int32> PathFindingTest(int32 startNode, int32 endNode);
+
+	void PopulateTestGraph();
+
+public:	
+	// Called every frame
+	virtual void Tick(float DeltaTime) override;
+
+	// Called to bind functionality to input
+	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+
+};

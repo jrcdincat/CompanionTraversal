@@ -1,0 +1,152 @@
+// Fill out your copyright notice in the Description page of Project Settings.
+
+
+#include "AIBase.h"
+
+// Sets default values
+AAIBase::AAIBase()
+{
+ 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
+	PrimaryActorTick.bCanEverTick = true;
+
+}
+
+// Called when the game starts or when spawned
+void AAIBase::BeginPlay()
+{
+	Super::BeginPlay();
+	
+}
+
+TArray<int32> AAIBase::RunDijkstra(TMap<int32, Node>& graph, const int32 startNode, const int32 endNode)
+{ 
+	TMap<int32, float> distances; 
+	TMap<int32, int32> previousNodes; 
+	TQueue<int32> queue; 
+	TArray<int32> visited; 
+
+	for (auto& node : graph)
+	{
+		int32 id = node.Key;
+		distances.Add(id, TNumericLimits<float>::Max()); // Set to infinity
+		previousNodes.Add(id, -1); // Set to undefined 
+	}
+
+	// Set start node
+	queue.Enqueue(startNode);
+	distances[startNode] = 0;
+
+	while (!queue.IsEmpty())
+	{
+		int32 currentNodeID;
+		queue.Dequeue(currentNodeID);
+		visited.Add(currentNodeID);
+
+		if (currentNodeID == endNode)
+		{
+			break;
+		}
+
+		Node& currentNode = graph[currentNodeID];
+
+		for (auto& neighbor : graph[currentNodeID]._neighbors)
+		{
+			int32 neighborId = neighbor.Key;
+			float neighborWeight = neighbor.Value;
+			float newDistance = distances[currentNodeID] + neighborWeight;
+
+			// Set to the lowest distance required to get to the neighbor node
+			if (newDistance < distances[neighborId])
+			{
+				distances[neighborId] = newDistance;
+
+				// Set previous node as current since the current node is a shorter distance
+				previousNodes[neighborId] = currentNodeID;
+				queue.Enqueue(neighborId);
+			}
+		}
+	}
+
+	// Adds the nodes in reverse order, based on previous nodes as they store the node that is the shortest distance away on the path
+	TArray<int32> shortestPath;
+	int32 currentNodeId = endNode;
+	while (currentNodeId != -1)
+	{
+		shortestPath.Add(currentNodeId);
+		currentNodeId = previousNodes[currentNodeId];
+	}
+
+	Algo::Reverse(shortestPath); // Reverse array to be in order from start to end
+
+	return shortestPath;
+}
+
+TArray<int32> AAIBase::PathFindingTest(int32 startNode, int32 endNode)
+{
+	PopulateTestGraph();
+	return RunDijkstra(Graph, startNode, endNode);;
+}
+
+void AAIBase::PopulateTestGraph()
+{
+	Node node0;
+	node0._id = 0;
+	node0._neighbors.Add(1, 2.0f);
+	node0._neighbors.Add(2, 6.0f);
+	Graph.Add(0, node0);
+
+	Node node1;
+	node1._id = 1;
+	node1._neighbors.Add(0, 2.0f);
+	node1._neighbors.Add(3, 5.0f);
+	Graph.Add(1, node1);
+
+	Node node2;
+	node2._id = 2;
+	node2._neighbors.Add(0, 6.0f);
+	node2._neighbors.Add(3, 8.0f);
+	Graph.Add(2, node2);
+
+	Node node3;
+	node3._id = 3;
+	node3._neighbors.Add(1, 5.0f);
+	node3._neighbors.Add(2, 8.0f);
+	node3._neighbors.Add(5, 15.0f);
+	node3._neighbors.Add(4, 10.0f);
+	Graph.Add(3, node3);
+
+	Node node4;
+	node4._id = 4;
+	node4._neighbors.Add(3, 10.0f);
+	node4._neighbors.Add(5, 6.0f);
+	node4._neighbors.Add(6, 2.0f);
+	Graph.Add(4, node4);
+
+	Node node5;
+	node5._id = 5;
+	node5._neighbors.Add(3, 15.0f);
+	node5._neighbors.Add(4, 6.0f);
+	node5._neighbors.Add(6, 6.0f);
+	Graph.Add(5, node5);
+
+	Node node6;
+	node6._id = 6;
+	node6._neighbors.Add(4, 2.0f);
+	node6._neighbors.Add(5, 6.0f);
+	Graph.Add(6, node6);
+}
+
+// Called every frame
+void AAIBase::Tick(float DeltaTime)
+{
+	Super::Tick(DeltaTime);
+
+}
+
+// Called to bind functionality to input
+void AAIBase::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
+{
+	Super::SetupPlayerInputComponent(PlayerInputComponent);
+
+}
+
