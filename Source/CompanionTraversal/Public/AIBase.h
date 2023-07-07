@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+#include "AINode.h"
 #include "AIBase.generated.h"
 
 UCLASS()
@@ -15,22 +16,16 @@ public:
 	// Sets default values for this character's properties
 	AAIBase();
 
-	struct Node
-	{
-		int32 _id;
-		TMap<int32, float> _neighbors;
-	};
-
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
 	// UFUNCTION(BlueprintCallable, Category = "Pathfinding"
-	TArray<int32> RunDijkstra(TMap<int32, Node>& graph, const int32 startNode, const int32 endNode);
+	TArray<int32> RunDijkstra(TMap<int32, AAINode*>& graph, const int32 startNode, const int32 endNode);
 
 
 	// Graph
-	TMap<int32, Node> Graph;
+	TMap<int32, AAINode*> Graph;
 
 	// Run test through level blueprint Debug Key 'G'
 	UFUNCTION(BlueprintCallable, Category = "Pathfinding")
