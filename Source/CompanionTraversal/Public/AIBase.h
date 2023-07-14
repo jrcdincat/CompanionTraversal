@@ -23,7 +23,6 @@ protected:
 	// UFUNCTION(BlueprintCallable, Category = "Pathfinding"
 	TArray<int32> RunDijkstra(TMap<int32, AAINode*>& graph, const int32 startNode, const int32 endNode);
 
-
 	// Graph
 	TMap<int32, AAINode*> Graph;
 
@@ -39,5 +38,4 @@ public:
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
-
 };
