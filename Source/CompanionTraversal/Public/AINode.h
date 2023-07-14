@@ -11,7 +11,7 @@ UCLASS()
 class COMPANIONTRAVERSAL_API AAINode : public AActor
 {
 	GENERATED_BODY()
-	
+
 public:	
 	// Sets default values for this actor's properties
 	AAINode();
@@ -19,9 +19,6 @@ public:
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
-
-	UFUNCTION(BlueprintCallable, Category = "Construction")
-		void ConstructSpline();
 
 	UFUNCTION(BlueprintCallable, Category = "Construction")
 		void SetSplinePointLocations();
@@ -35,18 +32,14 @@ public:
 	int32 _id;
 	TMap<int32, float> _neighbors;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		TArray<AActor*> connectedSplines;
-	UPROPERTY(EditAnywhere, BlueprintReadOnly)
-		TSet<AActor*> connectedReferences;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		TArray<AActor*> nodes;
-	UPROPERTY(EditAnywhere, BlueprintReadOnly)
-		TSet<AActor*> nodeReferences;
-
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 		TSubclassOf<AActor> splineBlueprint;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		TMap<AActor*, AActor*> nodeToSplineMap;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		TMap<AActor*, AActor*> referenceNodeToSplineMap;
 
 	AActor* a;
 };

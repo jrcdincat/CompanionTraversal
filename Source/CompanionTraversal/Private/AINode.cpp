@@ -16,69 +16,39 @@ void AAINode::BeginPlay()
 	Super::BeginPlay();
 }
 
-void AAINode::ConstructSpline()
-{
-	//UClass* spline = splineBlueprint->StaticClass();
-
-
-	//if (spline && spline->IsChildOf(AActor::StaticClass()))
-	//{
-	//	a = CreateDefaultSubobject<AActor>(FName(TEXT("NewObject")), spline, spline, false, false);
-	//}
-
-
-	//FActorSpawnParameters spawnParams;
-	//spawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
-
-	//if (IsValid(spline))
-	//{
-	//	if (IsValid(GetWorld()))
-	//	{
-	//		a = NewObject<AActor>(splineBlueprint, "Test", EObjectFlags::RF_Transactional);
-	//		// a = GetWorld()->SpawnActor<AActor>(splineBlueprint, GetActorLocation(), GetActorRotation(), spawnParams);
-	//	}
-	//}
-
-	//FVector selfLocation GetActorLocation();
-
-	//const 
-}
-
 void AAINode::SetSplinePointLocations()
 {
 	// Update the location of the first and last point for the spline to match this nodes location and the connecting nodes
-	for (auto& connnectedSpline : connectedSplines)
+	for (auto& map : nodeToSplineMap)
 	{
-		if (IsValid(connnectedSpline))
+		AActor* node = map.Key;
+		AActor* spline = map.Value;
+		if (IsValid(node) && IsValid(spline))
 		{
-			USplineComponent* splineComponent = connnectedSpline->GetComponentByClass<USplineComponent>();
+			USplineComponent* splineComponent = spline->GetComponentByClass<USplineComponent>();
 			if (IsValid(splineComponent))
 			{
 				splineComponent->SetLocationAtSplinePoint(0, GetActorLocation(), ESplineCoordinateSpace::World);
-
-				for (auto& node : nodes)
-				{
-					if (IsValid(node))
-					{
-						splineComponent->SetLocationAtSplinePoint(splineComponent->GetNumberOfSplinePoints() - 1, node->GetActorLocation(), ESplineCoordinateSpace::World);
-						Cast<AAINode>(node)->SetReferences(this, connnectedSpline);
-					}
-				}
-				connnectedSpline->RerunConstructionScripts();
+				splineComponent->SetLocationAtSplinePoint(splineComponent->GetNumberOfSplinePoints() - 1, node->GetActorLocation(), ESplineCoordinateSpace::World);
+				Cast<AAINode>(node)->SetReferences(this, spline); // Set node and spline as reference to connecting node
+				spline->RerunConstructionScripts();
 			}
 		}
 	}
 
-	// Update the last point in the reference spline with this node
-	for (auto& connectedRef : connectedReferences)
+	// Update the location of the last point for the spline to match this nodes location
+	for (auto& map : referenceNodeToSplineMap)
 	{
-		if (!connectedReferences.IsEmpty() && IsValid(connectedRef))
+		AActor* node = map.Key; 
+		AActor* spline = map.Value;
+
+		if (IsValid(node) && IsValid(spline))
 		{
-			USplineComponent* splineComponent = connectedRef->GetComponentByClass <USplineComponent>();
+			USplineComponent* splineComponent = spline->GetComponentByClass<USplineComponent>();
 			if (IsValid(splineComponent))
 			{
 				splineComponent->SetLocationAtSplinePoint(splineComponent->GetNumberOfSplinePoints() - 1, GetActorLocation(), ESplineCoordinateSpace::World);
-				connectedRef->RerunConstructionScripts();
+				spline->RerunConstructionScripts();
 			}
 		}
 	}
@@ -86,8 +56,7 @@ void AAINode::SetSplinePointLocations()
 
 void AAINode::SetReferences(AActor* node, AActor* spline)
 {
-	connectedReferences.Add(spline);
-	nodeReferences.Add(node);
+	referenceNodeToSplineMap.Add(node, spline);
 }
 
 // Called every frame
