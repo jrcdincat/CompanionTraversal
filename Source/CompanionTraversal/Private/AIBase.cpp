@@ -28,7 +28,7 @@ TArray<int32> AAIBase::RunDijkstra(TMap<int32, AAINode*>& graph, const int32 sta
 	for (auto& node : graph)
 	{
 		int32 id = node.Key;
-		distances.Add(id, TNumericLimits<float>::Max()); // Set to infinity
+		distances.Add(id, TNumericLimits<float>::Max());
 		previousNodes.Add(id, -1); // Set to undefined 
 	}
 
@@ -48,12 +48,14 @@ TArray<int32> AAIBase::RunDijkstra(TMap<int32, AAINode*>& graph, const int32 sta
 		}
 
 		AAINode& currentNode = *graph[currentNodeID];
-
 		for (auto& neighbor : graph[currentNodeID]->_neighbors)
 		{
 			int32 neighborId = neighbor.Key;
 			float neighborWeight = neighbor.Value;
 			float newDistance = distances[currentNodeID] + neighborWeight;
+			FString str = FString::Printf(TEXT("New: %f"), newDistance);
+			str.Append(FString::Printf(TEXT(" wD: %f"), distances[neighborId]));
+			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::White, str);
 
 			// Set to the lowest distance required to get to the neighbor node
 			if (newDistance < distances[neighborId])
@@ -83,13 +85,14 @@ TArray<int32> AAIBase::RunDijkstra(TMap<int32, AAINode*>& graph, const int32 sta
 
 TArray<int32> AAIBase::PathFindingTest(int32 startNode, int32 endNode)
 {
-	PopulateTestGraph();
+	//Graph.Empty();
+	//PopulateTestGraph();
 	TArray<int32> shortestPath = RunDijkstra(Graph, startNode, endNode);
 
-	for (auto& node : Graph)
-	{
-		node.Value->Destroy();
-	}
+	//for (auto& node : Graph)
+	//{
+	//	node.Value->Destroy();
+	//}
 
 	return shortestPath;
 }

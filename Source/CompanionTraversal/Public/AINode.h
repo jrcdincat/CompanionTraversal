@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "Components/SplineComponent.h"
+#include "AIEdge.h"
 #include "AINode.generated.h"
 
 UCLASS()
@@ -28,9 +29,14 @@ protected:
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
-
-	int32 _id;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		int32 _id;
 	TMap<int32, float> _neighbors;
+
+
+	// Neighbors are splines in both maps, with their weight values.
+
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 		TSubclassOf<AActor> splineBlueprint;

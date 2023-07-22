@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
 #include "AINode.h"
+#include "AIEdge.h"
 #include "AIBase.generated.h"
 
 UCLASS()
@@ -24,7 +25,8 @@ protected:
 	TArray<int32> RunDijkstra(TMap<int32, AAINode*>& graph, const int32 startNode, const int32 endNode);
 
 	// Graph
-	TMap<int32, AAINode*> Graph;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		TMap<int32, AAINode*> Graph;
 
 	// Run test through level blueprint Debug Key 'G'
 	UFUNCTION(BlueprintCallable, Category = "Pathfinding")
