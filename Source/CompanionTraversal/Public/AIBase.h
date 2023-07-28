@@ -32,7 +32,7 @@ protected:
 		
 	// Run test through level blueprint Debug Key 'G'
 	UFUNCTION(BlueprintCallable, Category = "Pathfinding")
-	TArray<int32> PathFindingTest(int32 startNode, int32 endNode);
+	TArray<int32> PathFinding(int32 startNode, int32 endNode);
 
 	void PopulateTestGraph();
 

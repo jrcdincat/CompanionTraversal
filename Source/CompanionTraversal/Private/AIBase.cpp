@@ -53,9 +53,9 @@ TArray<int32> AAIBase::RunDijkstra(TMap<int32, AAINode*>& graph, const int32 sta
 			int32 neighborId = neighbor.Key;
 			float neighborWeight = neighbor.Value;
 			float newDistance = distances[currentNodeID] + neighborWeight;
-			FString str = FString::Printf(TEXT("New: %f"), newDistance);
-			str.Append(FString::Printf(TEXT(" wD: %f"), distances[neighborId]));
-			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::White, str);
+			//FString str = FString::Printf(TEXT("New: %f"), newDistance);
+			//str.Append(FString::Printf(TEXT(" wD: %f"), distances[neighborId]));
+			//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::White, str);
 
 			// Set to the lowest distance required to get to the neighbor node
 			if (newDistance < distances[neighborId])
@@ -83,7 +83,7 @@ TArray<int32> AAIBase::RunDijkstra(TMap<int32, AAINode*>& graph, const int32 sta
 	return shortestPath;
 }
 
-TArray<int32> AAIBase::PathFindingTest(int32 startNode, int32 endNode)
+TArray<int32> AAIBase::PathFinding(int32 startNode, int32 endNode)
 {
 	//Graph.Empty();
 	//PopulateTestGraph();
