@@ -14,30 +14,6 @@ AAINode::AAINode()
 void AAINode::BeginPlay()
 {
 	Super::BeginPlay();
-
-	for (auto& mapNode : nodeToSplineMap)
-	{
-
-		AAIEdge* edge = Cast<AAIEdge>(mapNode.Value);
-		AAINode* aiNode = Cast<AAINode>(mapNode.Key);
-		if (IsValid(edge) && IsValid(aiNode))
-		{
-			// Use GetWeight() to get the edge weight
-			_neighbors.Add(aiNode->_id, edge->weight);
-		}
-	}
-
-	for (auto& mapNode : referenceNodeToSplineMap)
-	{
-
-		AAIEdge* edge = Cast<AAIEdge>(mapNode.Value);
-		AAINode* aiNode = Cast<AAINode>(mapNode.Key);
-		if (IsValid(edge) && IsValid(aiNode))
-		{
-			// Use GetWeight() to get the edge weight
-			_neighbors.Add(aiNode->_id, edge->weight);
-		}
-	}
 }
 
 void AAINode::SetSplinePointLocations()
@@ -87,5 +63,29 @@ void AAINode::SetReferences(AActor* node, AActor* spline)
 void AAINode::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+
+	for (auto& mapNode : nodeToSplineMap)
+	{
+
+		AAIEdge* edge = Cast<AAIEdge>(mapNode.Value);
+		AAINode* aiNode = Cast<AAINode>(mapNode.Key);
+		if (IsValid(edge) && IsValid(aiNode))
+		{
+			// Use GetWeight() to get the edge weight
+			_neighbors.Add(aiNode->_id, edge->weight);
+		}
+	}
+
+	for (auto& mapNode : referenceNodeToSplineMap)
+	{
+
+		AAIEdge* edge = Cast<AAIEdge>(mapNode.Value);
+		AAINode* aiNode = Cast<AAINode>(mapNode.Key);
+		if (IsValid(edge) && IsValid(aiNode))
+		{
+			// Use GetWeight() to get the edge weight
+			_neighbors.Add(aiNode->_id, edge->weight);
+		}
+	}
 }
 
