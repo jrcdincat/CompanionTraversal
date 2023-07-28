@@ -6,6 +6,7 @@
 #include "GameFramework/Character.h"
 #include "AINode.h"
 #include "AIEdge.h"
+#include "AISplineGraph.h"
 #include "AIBase.generated.h"
 
 UCLASS()
@@ -26,8 +27,9 @@ protected:
 
 	// Graph
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		TMap<int32, AAINode*> Graph;
-
+		AActor* graphActor = nullptr;
+		//TMap<int32, AAINode*> Graph;
+		
 	// Run test through level blueprint Debug Key 'G'
 	UFUNCTION(BlueprintCallable, Category = "Pathfinding")
 	TArray<int32> PathFindingTest(int32 startNode, int32 endNode);

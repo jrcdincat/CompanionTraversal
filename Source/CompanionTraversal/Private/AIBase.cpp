@@ -87,7 +87,14 @@ TArray<int32> AAIBase::PathFindingTest(int32 startNode, int32 endNode)
 {
 	//Graph.Empty();
 	//PopulateTestGraph();
-	TArray<int32> shortestPath = RunDijkstra(Graph, startNode, endNode);
+	TArray<int32> shortestPath;
+
+	if (IsValid(graphActor))
+	{
+		TMap<int32, AAINode*>& Graph = Cast<AAISplineGraph>(graphActor)->Graph;
+		shortestPath = RunDijkstra(Graph, startNode, endNode);
+	}
+	
 
 	//for (auto& node : Graph)
 	//{
@@ -99,51 +106,51 @@ TArray<int32> AAIBase::PathFindingTest(int32 startNode, int32 endNode)
 
 void AAIBase::PopulateTestGraph()
 {
-	AAINode* node0 = GetWorld()->SpawnActor<AAINode>();
-	node0->_id = 0;
-	node0->_neighbors.Add(1, 2.0f);
-	node0->_neighbors.Add(2, 6.0f);
-	Graph.Add(0, node0);
+	//AAINode* node0 = GetWorld()->SpawnActor<AAINode>();
+	//node0->_id = 0;
+	//node0->_neighbors.Add(1, 2.0f);
+	//node0->_neighbors.Add(2, 6.0f);
+	//Graph.Add(0, node0);
 
-	AAINode* node1 = GetWorld()->SpawnActor<AAINode>();
-	node1->_id = 1;
-	node1->_neighbors.Add(0, 2.0f);
-	node1->_neighbors.Add(3, 5.0f);
-	Graph.Add(1, node1);
+	//AAINode* node1 = GetWorld()->SpawnActor<AAINode>();
+	//node1->_id = 1;
+	//node1->_neighbors.Add(0, 2.0f);
+	//node1->_neighbors.Add(3, 5.0f);
+	//Graph.Add(1, node1);
 
-	AAINode* node2 = GetWorld()->SpawnActor<AAINode>();
-	node2->_id = 2;
-	node2->_neighbors.Add(0, 6.0f);
-	node2->_neighbors.Add(3, 8.0f);
-	Graph.Add(2, node2);
+	//AAINode* node2 = GetWorld()->SpawnActor<AAINode>();
+	//node2->_id = 2;
+	//node2->_neighbors.Add(0, 6.0f);
+	//node2->_neighbors.Add(3, 8.0f);
+	//Graph.Add(2, node2);
 
-	AAINode* node3 = GetWorld()->SpawnActor<AAINode>();
-	node3->_id = 3;
-	node3->_neighbors.Add(1, 5.0f);
-	node3->_neighbors.Add(2, 8.0f);
-	node3->_neighbors.Add(5, 15.0f);
-	node3->_neighbors.Add(4, 10.0f);
-	Graph.Add(3, node3);
+	//AAINode* node3 = GetWorld()->SpawnActor<AAINode>();
+	//node3->_id = 3;
+	//node3->_neighbors.Add(1, 5.0f);
+	//node3->_neighbors.Add(2, 8.0f);
+	//node3->_neighbors.Add(5, 15.0f);
+	//node3->_neighbors.Add(4, 10.0f);
+	//Graph.Add(3, node3);
 
-	AAINode* node4 = GetWorld()->SpawnActor<AAINode>();
-	node4->_id = 4;
-	node4->_neighbors.Add(3, 10.0f);
-	node4->_neighbors.Add(5, 6.0f);
-	node4->_neighbors.Add(6, 2.0f);
-	Graph.Add(4, node4);
+	//AAINode* node4 = GetWorld()->SpawnActor<AAINode>();
+	//node4->_id = 4;
+	//node4->_neighbors.Add(3, 10.0f);
+	//node4->_neighbors.Add(5, 6.0f);
+	//node4->_neighbors.Add(6, 2.0f);
+	//Graph.Add(4, node4);
 
-	AAINode* node5 = GetWorld()->SpawnActor<AAINode>();
-	node5->_id = 5;
-	node5->_neighbors.Add(3, 15.0f);
-	node5->_neighbors.Add(4, 6.0f);
-	node5->_neighbors.Add(6, 6.0f);
-	Graph.Add(5, node5);
+	//AAINode* node5 = GetWorld()->SpawnActor<AAINode>();
+	//node5->_id = 5;
+	//node5->_neighbors.Add(3, 15.0f);
+	//node5->_neighbors.Add(4, 6.0f);
+	//node5->_neighbors.Add(6, 6.0f);
+	//Graph.Add(5, node5);
 
-	AAINode* node6 = GetWorld()->SpawnActor<AAINode>();
-	node6->_id = 6;
-	node6->_neighbors.Add(4, 2.0f);
-	node6->_neighbors.Add(5, 6.0f);
-	Graph.Add(6, node6);
+	//AAINode* node6 = GetWorld()->SpawnActor<AAINode>();
+	//node6->_id = 6;
+	//node6->_neighbors.Add(4, 2.0f);
+	//node6->_neighbors.Add(5, 6.0f);
+	//Graph.Add(6, node6);
 }
 
 // Called every frame
